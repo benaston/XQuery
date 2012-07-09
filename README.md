@@ -1,3 +1,35 @@
+Legacy SQL
+======
+
+-- Update the date
+
+DECLARE @Deadline DATETIME
+DECLARE @NewDeadline DATETIME
+DECLARE @templatename as varchar(30)
+
+/*Set new values  */
+
+SET @NewDeadline = '2012-07-11 02:45'
+--SET @NewDeadline = getdate()
+--SET @templatename = 'F-ISOCY'
+SET @templatename = 'E-MTCL'
+--SET @templatename = 'F-TOLD'
+--SET @templatename = 'GLOBAL_P_3'
+--SET @templatename = 'NSEA_3'
+
+--SET @NewDeadline = '2012-05-31 11:35'
+--SET @templatename = 'WCR_3'
+
+
+update r
+set rp_deadlinedate = @NewDeadline
+from template tp
+inner join report r on r.rp_templateid = tp.tp_templateid
+where tp.tp_templatename = @templatename
+and r.rp_deadlinedate = 
+(select max(rp_deadlinedate) from report r_in where r_in.rp_templateid = r.rp_templateid)
+
+
 XQuery
 ======
 
